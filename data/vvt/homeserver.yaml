@@ -1,0 +1,50 @@
+# Configuration file for Synapse.
+#
+# This is a YAML file: see [1] for a quick introduction. Note in particular
+# that *indentation is important*: all the elements of a list or dictionary
+# should have the same indentation.
+#
+# [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+#
+# For more information on how to configure Synapse, including a complete accounting of
+# each option, go to docs/usage/configuration/config_documentation.md or
+# https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
+server_name: "vvt"
+pid_file: /data/homeserver.pid
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+database:
+  name: sqlite3
+  args:
+    database: /data/homeserver.db
+log_config: "/data/vvt.log.config"
+media_store_path: /data/media_store
+registration_shared_secret: "CY7IA#;Cehc.N^=vd6eobzX+&oHY-@f~aI4VdA6f;1xYM:k6KT"
+report_stats: false
+macaroon_secret_key: "NwS;JePChSv_H#ys3tZi^eWiS2G.DJM*WMi4_gMf;~RUwU9tni"
+form_secret: "wjnIy*k3T73#BA@yx;uyDNDlzjJuz-pQSMSwO.HLs;gHGVtz0Z"
+signing_key_path: "/data/vvt.signing.key"
+registration_shared_secret: "123"
+
+suppress_key_server_warning: true
+
+federation_verify_certificates: false
+
+ip_range_whitelist:
+  - '172.0.0.0/8'
+  - '127.0.0.0/8'
+
+trusted_key_servers:
+  - server_name: "matrix.org"
+    accept_keys_insecurely: true
+
+federation_custom_ca_list:
+  - /data/ca.pem
+
+# vim:ft=yaml

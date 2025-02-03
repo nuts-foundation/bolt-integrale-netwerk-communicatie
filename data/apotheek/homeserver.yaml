@@ -1,0 +1,46 @@
+# Configuration file for Synapse.
+#
+# This is a YAML file: see [1] for a quick introduction. Note in particular
+# that *indentation is important*: all the elements of a list or dictionary
+# should have the same indentation.
+#
+# [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+#
+# For more information on how to configure Synapse, including a complete accounting of
+# each option, go to docs/usage/configuration/config_documentation.md or
+# https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
+server_name: "apotheek"
+pid_file: /data/homeserver.pid
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+database:
+  name: sqlite3
+  args:
+    database: /data/homeserver.db
+log_config: "/data/apotheek.log.config"
+media_store_path: /data/media_store
+registration_shared_secret: "FBrAS+McZSya3GQZ6TzMZX4Iqj==ddI1K@y9PcR9=eWecs6IS3"
+report_stats: false
+macaroon_secret_key: "NtUYN&mfW*HrvXg#L7t=oOXUF,h,j7k1dqo&GA7F&.:,_a.tzQ"
+form_secret: "3RYg_=-nEbVKqUZKjmIXg,Ulxut*hIHc9UoJ1WZDXwo,bpSH0V"
+registration_shared_secret: "123"
+signing_key_path: "/data/apotheek.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+    accept_keys_insecurely: true
+
+federation_custom_ca_list:
+  - /data/ca.pem
+
+ip_range_whitelist:
+  - '172.0.0.0/8'
+  - '127.0.0.0/8'
+
+
+# vim:ft=yaml

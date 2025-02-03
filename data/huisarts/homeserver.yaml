@@ -1,0 +1,47 @@
+# Configuration file for Synapse.
+#
+# This is a YAML file: see [1] for a quick introduction. Note in particular
+# that *indentation is important*: all the elements of a list or dictionary
+# should have the same indentation.
+#
+# [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+#
+# For more information on how to configure Synapse, including a complete accounting of
+# each option, go to docs/usage/configuration/config_documentation.md or
+# https://element-hq.github.io/synapse/latest/usage/configuration/config_documentation.html
+server_name: "huisarts"
+pid_file: /data/homeserver.pid
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+database:
+  name: sqlite3
+  args:
+    database: /data/homeserver.db
+log_config: "/data/huisarts.log.config"
+media_store_path: /data/media_store
+registration_shared_secret: "Cy6szL1E,8z6,QcR1X1NG-6XT4_^lxSfA7evl~syAJsELNoS1*"
+report_stats: false
+macaroon_secret_key: "YyWWsMNX2MPAKAAFK,04dwnWSJgY1jJd:15DHG5_;yn+r@U5~N"
+form_secret: "jWo#,&ZC97Iq.k3GC~02Rc#:HY^qdnGY9Z&gIqAHmR=1ti9DsX"
+signing_key_path: "/data/huisarts.signing.key"
+registration_shared_secret: "123"
+
+ip_range_whitelist:
+  - '172.0.0.0/8'
+  - '127.0.0.0/8'
+
+trusted_key_servers:
+  - server_name: "matrix.org"
+    accept_keys_insecurely: true
+
+federation_custom_ca_list:
+  - /data/ca.pem
+
+# vim:ft=yaml
+

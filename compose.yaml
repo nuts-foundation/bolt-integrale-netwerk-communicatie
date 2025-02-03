@@ -1,0 +1,91 @@
+services:
+  proxy:
+    image: nginx:latest
+    ports:
+      - "8008:8008"
+      - "8448:8448"
+    volumes:
+      - type: bind
+        source: ./data/proxy/nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: bind
+        source: ./data/tls
+        target: /etc/nginx/ssl
+    networks:
+      matrix_network:
+        aliases:
+          - vvt
+          - apotheek
+          - huisarts
+    depends_on:
+      - matrix_vvt
+
+  matrix_apotheek:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix_server_apotheek
+    networks:
+      - matrix_network
+    ports:
+      - "8018:8008"
+    environment:
+      - SYNAPSE_SERVER_NAME=apotheek
+      - SYNAPSE_REPORT_STATS=yes
+    volumes:
+      - type: bind
+        source: ./data/apotheek
+        target: /data
+    hostname: apotheek
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  matrix_huisarts:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix_server_huisarts
+    networks:
+      - matrix_network
+    ports:
+      - "8028:8008"
+    environment:
+      - SYNAPSE_SERVER_NAME=huisarts
+      - SYNAPSE_REPORT_STATS=yes
+    volumes:
+      - type: bind
+        source: ./data/huisarts
+        target: /data
+    hostname: huisarts
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  matrix_vvt:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix_server_vvt
+    networks:
+      - matrix_network
+    ports:
+      - "8038:8008"
+    environment:
+      - SYNAPSE_SERVER_NAME=vvt
+      - SYNAPSE_REPORT_STATS=yes
+    volumes:
+      - type: bind
+        source: ./data/vvt
+        target: /data
+    hostname: vvt
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+networks:
+  matrix_network:
+    driver: bridge
