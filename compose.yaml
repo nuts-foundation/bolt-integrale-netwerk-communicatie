@@ -19,6 +19,8 @@ services:
           - huisarts
     depends_on:
       - matrix_vvt
+      - matrix_apotheek
+      - matrix_huisarts
 
   matrix_apotheek:
     image: matrixdotorg/synapse:latest
@@ -29,7 +31,7 @@ services:
       - "8018:8008"
     environment:
       - SYNAPSE_SERVER_NAME=apotheek
-      - SYNAPSE_REPORT_STATS=yes
+      - SYNAPSE_REPORT_STATS=no
     volumes:
       - type: bind
         source: ./data/apotheek
@@ -51,7 +53,7 @@ services:
       - "8028:8008"
     environment:
       - SYNAPSE_SERVER_NAME=huisarts
-      - SYNAPSE_REPORT_STATS=yes
+      - SYNAPSE_REPORT_STATS=no
     volumes:
       - type: bind
         source: ./data/huisarts
@@ -73,7 +75,7 @@ services:
       - "8038:8008"
     environment:
       - SYNAPSE_SERVER_NAME=vvt
-      - SYNAPSE_REPORT_STATS=yes
+      - SYNAPSE_REPORT_STATS=no
     volumes:
       - type: bind
         source: ./data/vvt
@@ -81,6 +83,25 @@ services:
     hostname: vvt
     healthcheck:
       test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  element_vvt:
+    image: vectorim/element-web:latest
+    container_name: element_vvt
+    networks:
+      - matrix_network
+    ports:
+      - "8003:80"
+    volumes:
+      - type: bind
+        source: ./data/vvt/element_config.json
+        target: /app/config.json
+    hostname: element_vvt
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:80/health"]
       interval: 15s
       timeout: 5s
       retries: 3
