@@ -171,9 +171,9 @@ When the AS wants to perform an action on behalf of a user, it needs obtain an a
     "user": "@_fhir"
   }
 }
-
-[See for more information the specification about Server Admin Style permissions](https://spec.matrix.org/unstable/application-service-api/#server-admin-style-permissions)
 ```
+
+See for more information [the specification about Server Admin Style permissions](https://spec.matrix.org/unstable/application-service-api/#server-admin-style-permissions)
 
 #### Performing actions
 
