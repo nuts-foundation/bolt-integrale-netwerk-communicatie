@@ -32,8 +32,6 @@ form_secret: "wjnIy*k3T73#BA@yx;uyDNDlzjJuz-pQSMSwO.HLs;gHGVtz0Z"
 signing_key_path: "/data/vvt.signing.key"
 registration_shared_secret: "123"
 
-suppress_key_server_warning: true
-
 federation_verify_certificates: false
 
 ip_range_whitelist:
@@ -46,5 +44,8 @@ trusted_key_servers:
 
 federation_custom_ca_list:
   - /data/ca.pem
+
+app_service_config_files:
+  - /data/as_config.yaml
 
 # vim:ft=yaml
